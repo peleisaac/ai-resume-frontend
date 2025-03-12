@@ -1,0 +1,13 @@
+@import url('variables.css'); /* Import color variables */
+
+.footer {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: var(--padding-medium) 0;
+    text-align: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
