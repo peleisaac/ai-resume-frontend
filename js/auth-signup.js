@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const lname = document.getElementById("lname").value.trim();
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value.trim();
-        const errorMessage = document.getElementById("error-message");
+        const errorMessage = documeznt.getElementById("error-message");
 
         errorMessage.textContent = "";
 
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert(result.message);
                     window.location.href = userRole === "employer" ? "employers-signin.html" : "jobseekers-signin.html";
                 } else {
-                    errorMessage.textContent = result.message;
+                    errorMessage.textContent = responseData.message || result.message;
                 }
             })
             .catch(error => {

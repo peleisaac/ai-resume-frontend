@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
         footerContainer.innerHTML = `
             <footer class="footer">
                 <div class="container">
-                    <p>&copy; 2025 Axxend Corporation</p>
+                    <p>&copy; 2025 AI Resume Screening Application</p>
                 </div>
             </footer>
         `;

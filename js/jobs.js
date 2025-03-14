@@ -37,10 +37,10 @@ async function fetchJobs() {
         if (!response.ok) {
             throw new Error('Failed to fetch jobs data');
         }
-        
+
         allJobs = await response.json();
         filteredJobs = [...allJobs];
-        
+
         // Initialize UI
         updateJobCount();
         renderJobs();
@@ -66,21 +66,21 @@ function renderJobs() {
         `;
         return;
     }
-    
+
     // Calculate pagination
     const startIndex = (currentPage - 1) * jobsPerPage;
     const endIndex = Math.min(startIndex + jobsPerPage, filteredJobs.length);
     const jobsToDisplay = filteredJobs.slice(startIndex, endIndex);
-    
+
     // Build HTML
     let jobsHTML = '';
-    
+
     jobsToDisplay.forEach(job => {
         const postedDate = new Date(job.postedDate);
         const currentDate = new Date();
         const diffTime = Math.abs(currentDate - postedDate);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
+
         let timeAgo;
         if (diffDays === 0) {
             timeAgo = 'Today';
@@ -95,7 +95,7 @@ function renderJobs() {
             const months = Math.floor(diffDays / 30);
             timeAgo = `${months} ${months === 1 ? 'month' : 'months'} ago`;
         }
-        
+
         jobsHTML += `
             <div class="job-card" data-job-id="${job.id}">
                 <div class="job-header">
@@ -138,9 +138,9 @@ function renderJobs() {
             </div>
         `;
     });
-    
+
     jobsListElement.innerHTML = jobsHTML;
-    
+
     // Add event listeners for job cards
     document.querySelectorAll('.job-card').forEach(card => {
         card.addEventListener('click', () => {
@@ -158,29 +158,29 @@ function updateJobCount() {
 // Render pagination controls
 function renderPagination() {
     const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
-    
+
     // Disable/enable buttons
     prevPageButton.classList.toggle('disabled', currentPage === 1);
     nextPageButton.classList.toggle('disabled', currentPage === totalPages || totalPages === 0);
-    
+
     // Generate page numbers
     let pagesHTML = '';
-    
+
     // Determine page range to show
     let startPage = Math.max(1, currentPage - 2);
     let endPage = Math.min(totalPages, startPage + 4);
-    
+
     // Adjust start page if needed
     if (endPage - startPage < 4) {
         startPage = Math.max(1, endPage - 4);
     }
-    
+
     for (let i = startPage; i <= endPage; i++) {
         pagesHTML += `<span class="${i === currentPage ? 'current' : ''}">${i}</span>`;
     }
-    
+
     pageNumbersElement.innerHTML = pagesHTML;
-    
+
     // Add event listeners to page numbers
     document.querySelectorAll('.page-numbers span').forEach(span => {
         span.addEventListener('click', () => {
@@ -202,33 +202,33 @@ function applyFilters() {
         jobType: jobTypeFilter.value,
         experience: experienceFilter.value
     };
-    
+
     filteredJobs = allJobs.filter(job => {
         // Search filter (title, company, description)
-        const searchMatch = !currentFilters.search || 
-            job.title.toLowerCase().includes(currentFilters.search) || 
-            job.company.toLowerCase().includes(currentFilters.search) || 
+        const searchMatch = !currentFilters.search ||
+            job.title.toLowerCase().includes(currentFilters.search) ||
+            job.company.toLowerCase().includes(currentFilters.search) ||
             job.shortDescription.toLowerCase().includes(currentFilters.search) ||
             job.skills.some(skill => skill.toLowerCase().includes(currentFilters.search));
-        
+
         // Location filter
-        const locationMatch = !currentFilters.location || 
+        const locationMatch = !currentFilters.location ||
             job.location.toLowerCase().includes(currentFilters.location);
-        
+
         // Job type filter
-        const jobTypeMatch = !currentFilters.jobType || 
+        const jobTypeMatch = !currentFilters.jobType ||
             job.type.toLowerCase() === currentFilters.jobType;
-        
+
         // Experience filter
-        const experienceMatch = !currentFilters.experience || 
+        const experienceMatch = !currentFilters.experience ||
             job.experience.toLowerCase().includes(currentFilters.experience);
-        
+
         return searchMatch && locationMatch && jobTypeMatch && experienceMatch;
     });
-    
+
     // Reset to first page
     currentPage = 1;
-    
+
     // Update UI
     updateJobCount();
     renderJobs();
@@ -239,7 +239,7 @@ function applyFilters() {
 function openJobDetails(jobId) {
     const job = allJobs.find(job => job.id.toString() === jobId);
     if (!job) return;
-    
+
     jobDetailContent.innerHTML = `
         <div class="job-detail-header">
             <h2>${job.title}</h2>
@@ -280,11 +280,11 @@ function openJobDetails(jobId) {
             </div>
         </div>
     `;
-    
+
     // Update apply button
     applyButton.setAttribute('data-job-id', job.id);
     saveJobButton.setAttribute('data-job-id', job.id);
-    
+
     // Show modal
     jobModal.style.display = 'block';
     document.body.style.overflow = 'hidden'; // Prevent scrolling
@@ -300,13 +300,13 @@ function closeJobDetails() {
 function applyForJob(jobId) {
     // Check if user is logged in
     const isLoggedIn = checkUserLoggedIn();
-    
+
     if (!isLoggedIn) {
         // Redirect to sign in page
         window.location.href = '../pages/jobseekers-signin.html?redirect=jobs&jobId=' + jobId;
         return;
     }
-    
+
     // Otherwise, proceed with application
     // This would typically send data to a server
     alert('Application functionality would be implemented here!');
@@ -316,13 +316,13 @@ function applyForJob(jobId) {
 function saveJob(jobId) {
     // Check if user is logged in
     const isLoggedIn = checkUserLoggedIn();
-    
+
     if (!isLoggedIn) {
         // Redirect to sign in page
         window.location.href = '../pages/jobseekers-signin.html?redirect=jobs';
         return;
     }
-    
+
     // Otherwise, save the job
     // This would typically send data to a server
     alert('Job saved to your profile!');
@@ -335,11 +335,16 @@ function checkUserLoggedIn() {
     return false;
 }
 
+// document.addEventListener("DOMContentLoaded", function () {
+// });
+
+
 // Event listeners
 document.addEventListener('DOMContentLoaded', () => {
     // Fetch jobs
-    fetchJobs();
-    
+    setTimeout(fetchJobs, 100);
+    // fetchJobs();
+
     // Page navigation
     prevPageButton.addEventListener('click', () => {
         if (currentPage > 1) {
@@ -349,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });
-    
+
     nextPageButton.addEventListener('click', () => {
         const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
         if (currentPage < totalPages) {
@@ -359,18 +364,18 @@ document.addEventListener('DOMContentLoaded', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });
-    
+
     // Search and filters
     searchButton.addEventListener('click', applyFilters);
     filterButton.addEventListener('click', applyFilters);
-    
+
     // Enter key for search
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             applyFilters();
         }
     });
-    
+
     // Modal functionality
     closeModalButton.addEventListener('click', closeJobDetails);
     window.addEventListener('click', (e) => {
@@ -378,13 +383,13 @@ document.addEventListener('DOMContentLoaded', () => {
             closeJobDetails();
         }
     });
-    
+
     // Apply and save buttons
     applyButton.addEventListener('click', () => {
         const jobId = applyButton.getAttribute('data-job-id');
         applyForJob(jobId);
     });
-    
+
     saveJobButton.addEventListener('click', () => {
         const jobId = saveJobButton.getAttribute('data-job-id');
         saveJob(jobId);

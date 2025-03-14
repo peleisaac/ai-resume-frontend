@@ -68,7 +68,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = {
             email: email,
             password: password,
+            user_role: userRole // jobseeker, employer, admin
         };
+
+        console.log("Sending login request with data:", data);
 
         fetch("https://ai-resume-backend.axxendcorp.com/api/v1/login", {
             method: "POST",
@@ -81,19 +84,76 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then(response => response.json())
             .then(responseData => {
-              const result = handleApiResponse(responseData.status_code, responseData.data);
+                console.log("Login response:", responseData);
+                const result = handleApiResponse(responseData.status_code, responseData.data);
+                console.log("Processed login result:", result);
 
-        if (result.success) {
-            localStorage.setItem("user", JSON.stringify(result.data));
-            alert(result.message);
-            window.location.href = userRole === "employer" ? "employers-profile.html" : "jobseekers-profile.html";
-        } else {
-            errorMessage.textContent = result.message;
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        errorMessage.textContent = "An error occurred. Please try again.";
-    });
+                if (result.success) {
+                    // Store user data in localStorage
+                    localStorage.setItem("user", JSON.stringify(result.data));
+
+                    // Get the userId from the login response
+                    const userId = result.data.user_id;
+                    console.log("User ID:", userId);
+                    console.log("Auth token:", result.data.token);
+
+                    // Make a request to the users endpoint to check profile completion status
+                    return fetch(`https://ai-resume-backend.axxendcorp.com/api/v1/users/${userId}`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "Authorization": `Token ${result.data.token}`
+                        },
+                        mode: "cors"
+                    })
+                        .then(profileResponse => {
+                            console.log("Profile response status:", profileResponse.status);
+                            return profileResponse.json();
+                        })
+                        .then(profileData => {
+                            console.log("Profile data:", profileData);
+
+                            // Log the specific user object structure
+                            if (profileData.user) {
+                                console.log("User object:", JSON.stringify(profileData.user, null, 2));
+                                console.log("Profile complete value:", profileData.user.profile_complete);
+                            } else {
+                                console.log("No user object found in response");
+                            }
+
+                            // Check if profile is completed
+                            if (profileData.status_code === "AR00" && profileData.user) {
+                                const profileCompleted = profileData.user.profile_complete === true;
+                                console.log("Profile completed status:", profileCompleted);
+
+                                // Redirect based on profile completion status
+                                if (profileCompleted) {
+                                    console.log("Redirecting to dashboard");
+                                    window.location.href = userRole === "employer" ? "employers-dashboard.html" : "jobseekers-dashboard.html";
+                                } else {
+                                    console.log("Redirecting to profile - incomplete profile");
+                                    window.location.href = userRole === "employer" ? "employers-profile.html" : "jobseekers-profile.html";
+                                }
+                            } else {
+                                console.log("Profile data issue, redirecting to profile page");
+                                window.location.href = userRole === "employer" ? "employers-profile.html" : "jobseekers-profile.html";
+                            }
+
+                            alert(result.message);
+                        })
+                        .catch(profileError => {
+                            console.error("Profile fetch error:", profileError);
+                            // If there's an error fetching the profile, redirect to profile page
+                            window.location.href = userRole === "employer" ? "employers-profile.html" : "jobseekers-profile.html";
+                        });
+                } else {
+                    errorMessage.textContent = responseData.message || result.message;
+                }
+            })
+            .catch(error => {
+                console.error("Login error:", error);
+                errorMessage.textContent = "An error occurred. Please try again.";
+            });
     }
 });

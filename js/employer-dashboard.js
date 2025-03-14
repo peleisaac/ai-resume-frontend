@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     // Load sidebar dynamically
     loadSidebar();
 
@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeCurrentPageContent();
 
     setTimeout(highlightActiveLink, 100); // Short delay to ensure sidebar is loaded
+
+    fetchUserDetails();
 });
 
 
@@ -26,8 +28,8 @@ function loadSidebar() {
             <img src="../assets/lady.jpg" alt="Employer Profile">
         </div>
         <div class="profile-info">
-            <h3>John Doe</h3>
-            <p>Employer</p>
+            <h3 id="dashboard-name">Loading...</h3>
+            <p id="dashboard-role">Loading...</p>
         </div>
     </div>
 
@@ -72,6 +74,18 @@ function loadSidebar() {
             </li>
 
         </ul>
+        <div class="sidebar-footer">
+            <a href="#" id="logout-btn" class="nav-item logout-btn">
+                <span class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span>Logout</span>
+            </a>
+        </div>
     </nav>
 </aside>`;
 
@@ -80,7 +94,76 @@ function loadSidebar() {
         sidebarContainer.innerHTML = sidebarHTML;
         console.log("Sidebar manually inserted into #sidebar.");
         setupSidebarNavigation();
+        setupLogoutButton();
         highlightActiveLink();
+    }
+}
+
+async function fetchUserDetails() {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    let nameElement = document.getElementById("dashboard-name");
+    let roleElement = document.getElementById("dashboard-role");
+
+    if (!nameElement || !roleElement) {
+        console.warn("Dashboard elements not found. Skipping update.");
+        return;
+    }
+
+    // First, try to update from localStorage
+    if (user) {
+        nameElement.textContent = user.first_name || "Jobseeker";
+        roleElement.textContent = user.user_role || "Jobseeker";
+    }
+
+    // If user data is missing or incomplete, fetch from API
+    if (!user || !user.user_id || !user.token) {
+        console.warn("User not found in localStorage. Redirecting to login...");
+        window.location.href = "jobseeker-signin.html"; // Redirect if user is missing
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://ai-resume-backend.axxendcorp.com/api/v1/user/${user.user_id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${user.token}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            nameElement.textContent = data.user.first_name || "Jobseeker";
+            roleElement.textContent = data.user.user_role || "Jobseeker";
+
+            // Save updated details in localStorage for future use
+            localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+            throw new Error(data.message || "Failed to fetch user details");
+        }
+    } catch (error) {
+        console.error("Error fetching user details:", error);
+    }
+}
+
+
+
+function setupLogoutButton() {
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function(event) {
+            event.preventDefault();
+            
+            // Clear user data from localStorage
+            localStorage.removeItem("user");
+            
+            // Redirect to login page
+            window.location.href = "/pages/employers-signin.html";
+            
+            console.log("User logged out successfully");
+        });
     }
 }
 
@@ -199,30 +282,6 @@ function updateActiveLink(activeLink, sidebarLinks) {
     activeLink.classList.add("active");
 }
 
-// function setupJobPostingForm() {
-//     const jobPostingForm = document.getElementById("jobPostingForm");
-//     if (jobPostingForm) {
-//         jobPostingForm.addEventListener("submit", function (event) {
-//             event.preventDefault();
-
-//             const formData = new FormData(jobPostingForm);
-//             const jobData = {};
-
-//             for (const [key, value] of formData.entries()) {
-//                 jobData[key] = value;
-//             }
-
-//             if (!jobData.jobTitle || !jobData.jobDescription) {
-//                 alert("Please fill in all required fields");
-//                 return;
-//             }
-
-//             console.log("Job posting data:", jobData);
-//             alert("Job posted successfully!");
-//             jobPostingForm.reset();
-//         });
-//     }
-// }
 
 function setupSidebarToggle() {
     document.addEventListener("click", function (event) {
