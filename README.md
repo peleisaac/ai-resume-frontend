@@ -10,10 +10,9 @@ The AI Resume Application is a web-based project built using HTML, CSS and JavaS
 ## Features 
 - Clean and modern UI for resume uploads
 - Responsive design for all screen sizes
-- Organized resume display section
 - Simple and lightweight interface
 - Easy customization with CSS
-- Resumes are catergorised in good order
+- Clean and intuitive dashboards for Jobseekers and Employers
 
 
 ## Technologies Used
@@ -35,5 +34,7 @@ The AI Resume Application is a web-based project built using HTML, CSS and JavaS
   ```
 
 3. **Open the project in a browser**
+   ```bash
   Simply open index.html in your preferred browser
+  ```
 
