@@ -33,8 +33,5 @@ The AI Resume Application is a web-based project built using HTML, CSS and JavaS
   cd ai-resume-frontend
   ```
 
-3. **Open the project in a browser**
-   ```bash
-  Simply open index.html in your preferred browser
-  ```
+3. **Open the project in a browser**: Simply open index.html in your preferred browser
 
