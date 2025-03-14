@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const lname = document.getElementById("lname").value.trim();
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value.trim();
-        const errorMessage = documeznt.getElementById("error-message");
+        const errorMessage = document.getElementById("error-message");
 
         errorMessage.textContent = "";
 
