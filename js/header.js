@@ -9,15 +9,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (role === "jobseeker") {
         // Show only the Employer button
-        buttons = `<button class="btn danger" onclick="location.href='/pages/employers-signin.html'">Employers</button>`;
+        buttons = `<button class="btn danger" onclick="location.href='employers-signin.html'">Employers</button>`;
     } else if (role === "employer") {
         // Show only the Jobseeker button
-        buttons = `<button class="btn danger" onclick="location.href='/pages/jobseekers-signin.html'">Jobseekers</button>`;
+        buttons = `<button class="btn danger" onclick="location.href='jobseekers-signin.html'">Jobseekers</button>`;
     } else {
         // Landing page: Show both
         buttons = `
-            <button class="btn secondary-white" onclick="location.href='/pages/jobseekers-signin.html'">Jobseekers</button>
-            <button class="btn danger" onclick="location.href='/pages/employers-signin.html'">Employers</button>
+            <button class="btn secondary-white" onclick="location.href='jobseekers-signin.html'">Jobseekers</button>
+            <button class="btn danger" onclick="location.href='employers-signin.html'">Employers</button>
         `;
     }
 
@@ -26,12 +26,12 @@ document.addEventListener("DOMContentLoaded", function () {
         <header class="header">
             <div class="container">
                 <h1 class="logo">
-                    <a href="/index.html">AI Resume Screening</a>
+                    <a href="index.html">AI Resume Screening</a>
                 </h1>
                 <nav>
                     <ul class="nav-links">
-                        <li><a href="/pages/jobs.html">Jobs</a></li>
-                        <li><a href="/pages/contact.html">Contact Us</a></li>
+                        <li><a href="jobs.html">Jobs</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
                         ${buttons}
                     </ul>
                 </nav>
