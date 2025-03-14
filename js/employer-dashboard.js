@@ -37,7 +37,7 @@ function loadSidebar() {
     <nav class="dashboard-nav">
         <ul>
             <li>
-                <a href="employer-dashboard.html" class="nav-item">
+                <a href="/ai-resume-frontend/pages/employer-dashboard.html" class="nav-item">
                     <span class="icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" />
@@ -50,7 +50,7 @@ function loadSidebar() {
                 </a>
             </li>
             <li>
-                <a href="employer-new-job.html" class="nav-item active">
+                <a href="/ai-resume-frontend/pages/employer-new-job.html" class="nav-item active">
                     <span class="icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -61,7 +61,7 @@ function loadSidebar() {
                 </a>
             </li>
             <li>
-                <a href="employer-job-listings.html" class="nav-item">
+                <a href="/ai-resume-frontend/pages/employer-job-listings.html" class="nav-item">
                     <span class="icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -119,7 +119,7 @@ async function fetchUserDetails() {
     // If user data is missing or incomplete, fetch from API
     if (!user || !user.user_id || !user.token) {
         console.warn("User not found in localStorage. Redirecting to login...");
-        window.location.href = "jobseeker-signin.html"; // Redirect if user is missing
+        window.location.href = "/ai-resume-frontend/pages/jobseeker-signin.html"; // Redirect if user is missing
         return;
     }
 
@@ -160,7 +160,7 @@ function setupLogoutButton() {
             localStorage.removeItem("user");
             
             // Redirect to login page
-            window.location.href = "employers-signin.html";
+            window.location.href = "/ai-resume-frontend/pages/employers-signin.html";
             
             console.log("User logged out successfully");
         });
@@ -299,9 +299,9 @@ window.addEventListener('popstate', function () {
     const currentPath = window.location.pathname;
 
     // Only fetch if it's one of your application pages
-    if (currentPath.includes('employer-dashboard.html') ||
-        currentPath.includes('employer-new-job.html') ||
-        currentPath.includes('employer-job-listings.html')) {
+    if (currentPath.includes('/ai-resume-frontend/pages/employer-dashboard.html') ||
+        currentPath.includes('/ai-resume-frontend/pages/employer-new-job.html') ||
+        currentPath.includes('/ai-resume-frontend/pages/employer-job-listings.html')) {
 
         // Load the content for the current URL
         loadContent(currentPath);
