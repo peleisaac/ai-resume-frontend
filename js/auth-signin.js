@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 // Redirect based on profile completion status
                                 if (profileCompleted) {
                                     console.log("Redirecting to dashboard");
-                                    window.location.href = userRole === "employer" ? "employers-dashboard.html" : "jobseekers-dashboard.html";
+                                    window.location.href = userRole === "employer" ? "employer-dashboard.html" : "jobseekers-dashboard.html";
                                 } else {
                                     console.log("Redirecting to profile - incomplete profile");
                                     window.location.href = userRole === "employer" ? "employers-profile.html" : "jobseekers-profile.html";
