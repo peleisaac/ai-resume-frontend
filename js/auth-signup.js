@@ -84,8 +84,9 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        if (password.length < 6) {
-            errorMessage.textContent = "Password must be at least 6 characters long.";
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+        if (!passwordPattern.test(password)) {
+            errorMessage.textContent = "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.";
             return;
         }
 
