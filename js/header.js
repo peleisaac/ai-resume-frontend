@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <header class="header">
             <div class="container">
                 <h1 class="logo">
-                    <a href="index.html">AI Resume Screening</a>
+                    <a href="/">AI Resume Screening</a>
                 </h1>
                 <nav>
                     <ul class="nav-links">
