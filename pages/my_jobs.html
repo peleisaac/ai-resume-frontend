@@ -4,20 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Jobs | AI Resume Screening</title>
+    <title>My Jobs | Jobseeker Dashboard</title>
     <link rel="stylesheet" href="../css/variables.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/footer.css">
-    <link rel="stylesheet" href="../css/jobseeker-dashboard.css">
+    <link rel="stylesheet" href="../css/button.css">
+    <link rel="stylesheet" href="../css/jobseekers-dashboard.css">
+    <link rel="stylesheet" href="../css/my-jobs.css">
 </head>
 
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar Navigation -->
+        <!-- Sidebar Container - Will be populated by JS -->
         <div id="sidebar"></div>
 
-        <!-- Main Content Area -->
-        <!-- <main class="main-content">
+        <!-- Main Content -->
+        <div class="main-content">
             <div class="top-bar">
                 <h1>My Jobs</h1>
                 <div class="user-actions">
@@ -29,219 +29,112 @@
                         </svg>
                     </button>
                     <div class="user-avatar">
-                        <img src="../assets/jobseeker.jpg" alt="User Avatar">
+                        <img src="../assets/lady.jpg" alt="User Avatar">
                     </div>
                 </div>
             </div>
 
-            <div class="content-card">
-                <div class="card-header">
-                    <h2>Manage Your Job Applications</h2>
-                    <p>Track your applications and discover jobs tailored for you</p>
-                </div>
-
+            <!-- My Jobs Page Content -->
+            <section class="my-jobs-container">
                 <div class="tabs-container">
                     <div class="tabs">
-                        <button class="tab-btn active" data-tab="my-applications">My Applications</button>
-                        <button class="tab-btn" data-tab="recommendations">Job Recommendations</button>
+                        <button class="tab-btn active" data-tab="saved">Saved Jobs</button>
+                        <button class="tab-btn" data-tab="applied">Applied Jobs</button>
                     </div>
+                    <div class="tab-content">
+                        <!-- Saved Jobs Tab -->
+                        <div id="saved-jobs" class="tab-pane active">
+                            <div class="search-bar">
+                                <input type="text" id="saved-search" placeholder="Search your saved jobs">
+                                <button id="saved-search-btn" class="btn primary">Search</button>
+                            </div>
+                            <div class="jobs-list" id="saved-jobs-list">
+                                <!-- Saved jobs will be loaded dynamically here -->
+                                <div class="loading-spinner">
+                                    <div class="spinner"></div>
+                                    <p>Loading saved jobs...</p>
+                                </div>
+                            </div>
+                            <div class="no-jobs-message" id="no-saved-jobs" style="display: none;">
+                                <div class="empty-state">
+                                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 21L12 17L5 21V5C5 4.46957 5.21071 3.96086 5.58579 3.58579C5.96086 3.21071 6.46957 3 7 3H17C17.5304 3 18.0391 3.21071 18.4142 3.58579C18.7893 3.96086 19 4.46957 19 5V21Z" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <h3>No saved jobs yet</h3>
+                                    <p>Save jobs you're interested in to view them here later</p>
+                                    <button class="btn primary" onclick="window.location.href='jobseekers-browse-jobs.html'">Browse Jobs</button>
+                                </div>
+                            </div>
+                        </div>
 
-                    My Applications Tab Content
-                    <div class="tab-content active" id="my-applications">
-                        <div class="filter-section">
-                            <div class="filter-group">
-                                <label for="statusFilter">Status:</label>
-                                <select id="statusFilter">
-                                    <option value="all">All Statuses</option>
-                                    <option value="applied">Applied</option>
-                                    <option value="screening">Screening</option>
+                        <!-- Applied Jobs Tab -->
+                        <div id="applied-jobs" class="tab-pane">
+                            <div class="search-bar">
+                                <input type="text" id="applied-search" placeholder="Search your applied jobs">
+                                <button id="applied-search-btn" class="btn primary">Search</button>
+                            </div>
+                            <div class="filter-bar">
+                                <label for="status-filter" class="visually-hidden">Filter by Status</label>
+                                <select id="status-filter" aria-label="Filter by Status">
+                                    <option value="">All Statuses</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="reviewed">Reviewed</option>
                                     <option value="interview">Interview</option>
                                     <option value="offered">Offered</option>
                                     <option value="rejected">Rejected</option>
                                 </select>
-                            </div>
-                            <div class="filter-group">
-                                <label for="dateFilter">Date Applied:</label>
-                                <select id="dateFilter">
-                                    <option value="all">All Time</option>
+                                <label for="date-filter" class="visually-hidden">Filter by Date</label>
+                                <select id="date-filter" aria-label="Filter by Date">
+                                    <option value="">All Dates</option>
                                     <option value="today">Today</option>
                                     <option value="week">This Week</option>
                                     <option value="month">This Month</option>
                                 </select>
+                                <button id="filter-btn" class="btn secondary-blue">Apply Filters</button>
                             </div>
-                            <div class="search-container">
-                                <input type="text" id="searchApplications" placeholder="Search applications...">
-                                <button class="search-btn" title="Search">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            <div class="jobs-list" id="applied-jobs-list">
+                                <!-- Applied jobs will be loaded dynamically here -->
+                                <div class="loading-spinner">
+                                    <div class="spinner"></div>
+                                    <p>Loading applied jobs...</p>
+                                </div>
+                            </div>
+                            <div class="no-jobs-message" id="no-applied-jobs" style="display: none;">
+                                <div class="empty-state">
+                                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
-                                </button>
+                                    <h3>No job applications yet</h3>
+                                    <p>Applied jobs will appear here</p>
+                                    <button class="btn primary" onclick="window.location.href='jobseekers-browse-jobs.html'">Browse Jobs</button>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="applications-table-container">
-                            <table class="applications-table">
-                                <thead>
-                                    <tr>
-                                        <th>Job Title</th>
-                                        <th>Company</th>
-                                        <th>Location</th>
-                                        <th>Date Applied</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="applicationsTableBody">
-                                    <tr>
-                                        <td>
-                                            <div class="job-title-container">
-                                                <span class="job-title">Senior Software Engineer</span>
-                                            </div>
-                                        </td>
-                                        <td>TechCorp Inc.</td>
-                                        <td>San Francisco, CA</td>
-                                        <td>Mar 5, 2025</td>
-                                        <td>
-                                            <span class="status-badge interview">Interview</span>
-                                        </td>
-                                        <td>
-                                            <div class="action-menu">
-                                                <button class="action-btn view-btn" data-id="1" title="View Details">
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M2 12C2 12 5 5 12 5C19 5 22 12 22 12C22 12 19 19 12 19C5 19 2 12 2 12Z"
-                                                            stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" />
-                                                        <circle cx="12" cy="12" r="3" stroke="currentColor"
-                                                            stroke-width="2" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="job-title-container">
-                                                <span class="job-title">UX/UI Designer</span>
-                                            </div>
-                                        </td>
-                                        <td>Creative Solutions</td>
-                                        <td>New York, NY</td>
-                                        <td>Mar 8, 2025</td>
-                                        <td>
-                                            <span class="status-badge screening">Screening</span>
-                                        </td>
-                                        <td>
-                                            <div class="action-menu">
-                                                <button class="action-btn view-btn" data-id="2" title="View Details">
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M2 12C2 12 5 5 12 5C19 5 22 12 22 12C22 12 19 19 12 19C5 19 2 12 2 12Z"
-                                                            stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" />
-                                                        <circle cx="12" cy="12" r="3" stroke="currentColor"
-                                                            stroke-width="2" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="job-title-container">
-                                                <span class="job-title">Data Analyst</span>
-                                            </div>
-                                        </td>
-                                        <td>Insight Analytics</td>
-                                        <td>Remote</td>
-                                        <td>Mar 1, 2025</td>
-                                        <td>
-                                            <span class="status-badge applied">Applied</span>
-                                        </td>
-                                        <td>
-                                            <div class="action-menu">
-                                                <button class="action-btn view-btn" data-id="3" title="View Details">
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M2 12C2 12 5 5 12 5C19 5 22 12 22 12C22 12 19 19 12 19C5 19 2 12 2 12Z"
-                                                            stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" />
-                                                        <circle cx="12" cy="12" r="3" stroke="currentColor"
-                                                            stroke-width="2" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="job-title-container">
-                                                <span class="job-title">Product Manager</span>
-                                            </div>
-                                        </td>
-                                        <td>Innovate Inc.</td>
-                                        <td>Austin, TX</td>
-                                        <td>Feb 25, 2025</td>
-                                        <td>
-                                            <span class="status-badge rejected">Rejected</span>
-                                        </td>
-                                        <td>
-                                            <div class="action-menu">
-                                                <button class="action-btn view-btn" data-id="4" title="View Details">
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M2 12C2 12 5 5 12 5C19 5 22 12 22 12C22 12 19 19 12 19C5 19 2 12 2 12Z"
-                                                            stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" />
-                                                        <circle cx="12" cy="12" r="3" stroke="currentColor"
-                                                            stroke-width="2" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
+                </div>
+            </section>
+        </div>
+    </div>
 
-                    Job Recommendations Tab Content
-                    <div class="tab-content" id="recommendations">
-                        <div class="filter-section">
-                            <div class="filter-group">
-                                <label for="categoryFilter">Category:</label>
-                                <select id="categoryFilter">
-                                    <option value="all">All Categories</option>
-                                    <option value="technology">Technology</option>
-                                    <option value="finance">Finance</option>
-                                    <option value="healthcare">Healthcare</option>
-                                    <option value="education">Education</option>
-                                    <option value="marketing">Marketing</option>
-                                    <option value="sales">Sales</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label for="locationFilter">Location:</label>
-                                <select id="locationFilter">
-                                    <option value="all">All Locations</option>
-                                    <option value="remote">Remote</option>
-                                    <option value="sf">San Francisco</option>
-                                    <option value="nyc">New York</option>
-                                    <option value="chicago">Chicago</option>
-                                    <option value="austin">Austin</option>
-                                </select>
-                            </div>
-                            <div class="search-container">
-                                <input type="text" id="searchRecommendations" placeholder="Search recommendations...">
-                                <button class="search-btn" title="Search">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M21 21L15 15M17 10C17 13. -->
+    <!-- Job Details Modal -->
+    <div id="job-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="job-detail-content">
+                <!-- Job details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary" id="apply-button">Apply Now</button>
+                <button class="btn secondary" id="remove-saved-button">Remove from Saved</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="../js/jobseeker-sidebar.js"></script>
+    <script src="../js/my-jobs.js"></script>
+</body>
+
+</html>

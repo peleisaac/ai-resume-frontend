@@ -5,9 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Employer Profile</title>
-    <link rel="stylesheet" href="../css/profiles.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/profiles.css" />
+    <link rel="stylesheet" href="../css/header.css" />
+    <link rel="stylesheet" href="../css/footer.css" />
 </head>
 
 <body data-role="employer">
@@ -65,7 +65,6 @@
                     </select>
                 </div>
 
-
                 <div>
                     <label for="region">Region</label>
                     <select id="region" required>
@@ -109,8 +108,9 @@
             </div>
 
             <div>
-                <button class="profile_button" onclick="window.location.href = './employer-dashboard.html'"
-                    type="submit">Submit</button>
+                <button class="profile_button" type="submit">
+                    Submit
+                </button>
             </div>
         </form>
     </div>
@@ -118,13 +118,59 @@
     <script>
         function validatePhoneNumber(input) {
             // Remove any non-digit characters
-            input.value = input.value.replace(/\D/g, '');
+            input.value = input.value.replace(/\D/g, "");
 
             // Ensure length does not exceed 10
             if (input.value.length > 10) {
                 input.value = input.value.slice(0, 10);
             }
         }
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            const user = JSON.parse(localStorage.getItem("user"));
+
+            if (!user || !user.user_id) {
+                alert("User not found. Please log in.");
+                window.location.href = "employers-signin.html"; // Redirect to login if user is missing
+                return;
+            }
+
+            try {
+                // Fetch the user data
+                const response = await fetch(
+                    `https://ai-resume-backend.axxendcorp.com/api/v1/user/${user.user_id}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Token ${user.token}`,
+                        },
+                    }
+                );
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Populate the form fields
+                    document.getElementById("company-name").value = data.user.company_name || "";
+                    document.getElementById("contact-name").value = data.user.contact_name || "";
+                    document.getElementById("business-email").value = data.user.email || "";
+                    document.getElementById("company-description").value = data.user.company_description || "";
+                    document.getElementById("industry-sector").value = data.user.industry || "";
+                    document.getElementById("region").value = data.user.region || "";
+                    document.getElementById("city").value = data.user.city || "";
+                    document.getElementById("address").value = data.user.address || "";
+                    document.getElementById("phone-number").value = data.user.msisdn || "";
+                    document.getElementById("website").value = data.user.socials || "";
+                } else {
+                    throw new Error(data.message || "Failed to fetch user details");
+                }
+            } catch (error) {
+                console.error("Error fetching user details:", error);
+                alert(error.message);
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             const jobseekerForm = document.getElementById("employer-form");
 
@@ -135,16 +181,17 @@
                 const formData = {
                     company_name: document.getElementById("company-name").value.trim(),
                     contact_name: document.getElementById("contact-name").value.trim(),
-                    business_email: document.getElementById("business-email").value.trim(),
-                    company_description: document.getElementById("company-description").value,
-                    industry: document.getElementById("dob").value,
+                    email: document.getElementById("business-email").value.trim(),
+                    company_description: document.getElementById("company-description")
+                        .value,
+                    industry: document.getElementById("industry-sector").value,
                     region: document.getElementById("region").value.trim(),
                     city: document.getElementById("city").value.trim(),
                     address: document.getElementById("address").value.trim(),
                     msisdn: document.getElementById("phone-number").value.trim(),
                     socials: document.getElementById("website").value.trim(),
-                    job_notifications: getJobNotificationStatus(),
-                    user_role: "employer"
+                    // job_notifications: getJobNotificationStatus(),
+                    user_role: "employer",
                 };
 
                 console.log("Updating profile:", formData); // Debugging
@@ -152,20 +199,24 @@
                 const user = JSON.parse(localStorage.getItem("user"));
 
                 try {
-                    const response = await fetch(`https://ai-resume-backend.axxendcorp.com/api/v1/user/${user.user_id}`, { // Replace with actual API URL
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Token ${user?.token}` // Assuming token is stored in localStorage
-                        },
-                        body: JSON.stringify(formData)
-                    });
+                    const response = await fetch(
+                        `https://ai-resume-backend.axxendcorp.com/api/v1/user/${user.user_id}`,
+                        {
+                            // Replace with actual API URL
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Token ${user?.token}`, // Assuming token is stored in localStorage
+                            },
+                            body: JSON.stringify(formData),
+                        }
+                    );
 
                     const data = await response.json();
 
                     if (response.ok) {
                         alert("Profile updated successfully!");
-                        window.location.href = "/pages/upload_cv.html"; // Redirect to CV upload page
+                        window.location.href = "./employer-dashboard.html"; // Redirect to CV upload page
                     } else {
                         throw new Error(data.message || "Profile update failed");
                     }
@@ -178,26 +229,29 @@
             // Helper function to get selected categories (max 2)
             function getSelectedCategories() {
                 const selected = [];
-                document.querySelectorAll("#category-list input:checked").forEach(checkbox => {
-                    selected.push(checkbox.value);
-                });
+                document
+                    .querySelectorAll("#category-list input:checked")
+                    .forEach((checkbox) => {
+                        selected.push(checkbox.value);
+                    });
                 return selected.slice(0, 2); // Ensure max 2 selections
             }
 
             function getJobNotificationStatus() {
-                return document.getElementById("job-notifications").checked ? "1" : "0";
+                return document.getElementById("job-notifications").checked
+                    ? "1"
+                    : "0";
             }
 
             function validatePhoneNumber(input) {
                 // Remove any non-digit characters
-                input.value = input.value.replace(/\D/g, '');
+                input.value = input.value.replace(/\D/g, "");
 
                 // Ensure length does not exceed 10
                 if (input.value.length > 10) {
                     input.value = input.value.slice(0, 10);
                 }
             }
-
         });
     </script>
     <script src="../js/header.js"></script>

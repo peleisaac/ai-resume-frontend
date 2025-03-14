@@ -104,6 +104,7 @@
 
                     if (response.ok) {
                         alert("Your CV was successfully uploaded!");
+                        window.location.href = "../pages/jobseekers-dashboard.html";
 
                         localStorage.setItem("user", JSON.stringify(result.user_details));
 

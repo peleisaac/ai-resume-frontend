@@ -57,7 +57,7 @@
 
                     <!-- Requirements Section -->
                     <div class="form-group multi-item-section">
-                        <label>Requirements</label>
+                        <label>Requirements <span class="required">*</span> </label>
                         <div class="item-input-container">
                             <input type="text" id="requirementInput" placeholder="Add a requirement">
                             <button type="button" id="addRequirementBtn" class="add-item-btn">Add</button>
@@ -68,7 +68,7 @@
 
                     <!-- Benefits Section -->
                     <div class="form-group multi-item-section">
-                        <label>Benefits</label>
+                        <label>Benefits <span class="required">*</span></label>
                         <div class="item-input-container">
                             <input type="text" id="benefitInput" placeholder="Add a benefit">
                             <button type="button" id="addBenefitBtn" class="add-item-btn">Add</button>
@@ -79,7 +79,7 @@
 
                     <!-- Required Skills Section -->
                     <div class="form-group multi-item-section">
-                        <label>Required Skills</label>
+                        <label>Required Skills <span class="required">*</span></label>
                         <div class="item-input-container">
                             <input type="text" id="skillInput" placeholder="Add a required skill">
                             <button type="button" id="addSkillBtn" class="add-item-btn">Add</button>
@@ -90,8 +90,8 @@
 
                     <div class="form-row">
                         <div class="form-group half">
-                            <label for="category">Category</label>
-                            <select id="category" name="category">
+                            <label for="category">Category <span class="required">*</span></label>
+                            <select id="category" name="category" required>
                                 <option value="" selected disabled>Select a category</option>
                                 <option value="technology">Technology</option>
                                 <option value="finance">Finance</option>
@@ -104,8 +104,8 @@
                         </div>
 
                         <div class="form-group half">
-                            <label for="contractType">Contract Type</label>
-                            <select id="contractType" name="contractType">
+                            <label for="contractType">Contract Type <span class="required">*</span></label>
+                            <select id="contractType" name="contractType" required>
                                 <option value="" selected disabled>Select contract type</option>
                                 <option value="fullTime">Full-Time</option>
                                 <option value="partTime">Part-Time</option>
@@ -118,8 +118,8 @@
 
                     <div class="form-row">
                         <div class="form-group half">
-                            <label for="experience">Experience Required</label>
-                            <select id="experience" name="experience">
+                            <label for="experience">Experience Required <span class="required">*</span></label>
+                            <select id="experience" name="experience" required>
                                 <option value="" selected disabled>Select experience level</option>
                                 <option value="entry">Entry Level</option>
                                 <option value="intermediate">Intermediate</option>
@@ -129,8 +129,8 @@
                         </div>
 
                         <div class="form-group half">
-                            <label for="education">Education Level</label>
-                            <select id="education" name="education">
+                            <label for="education">Education Level <span class="required">*</span></label>
+                            <select id="education" name="education" required>
                                 <option value="" selected disabled>Select education level</option>
                                 <option value="highSchool">High School</option>
                                 <option value="associate">Associate's Degree</option>
@@ -143,7 +143,7 @@
 
                     <div class="form-row">
                         <div class="form-group half">
-                            <label for="region">Region</label>
+                            <label for="region">Region <span class="required">*</span></label>
                             <select id="region" name="region" required>
                                 <option value="" selected disabled>Select Region</option>
                                 <option value="Greater Accra">Greater Accra</option>
@@ -160,8 +160,8 @@
                         </div>
 
                         <div class="form-group half">
-                            <label for="city">City</label>
-                            <input type="text" id="city" name="city" placeholder="Enter city">
+                            <label for="city">City <span class="required">*</span></label>
+                            <input type="text" id="city" name="city" placeholder="Enter city" required>
                         </div>
                     </div>
 
