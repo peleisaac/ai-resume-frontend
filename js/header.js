@@ -26,12 +26,12 @@ document.addEventListener("DOMContentLoaded", function () {
         <header class="header">
             <div class="container">
                 <h1 class="logo">
-                    <a href="/ai-resume-frontend/">AI Resume Screening</a>
+                    <a href="/">AI Resume Screening</a>
                 </h1>
                 <nav>
                     <ul class="nav-links">
-                        <li><a href="jobs.html">Jobs</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="/pages/jobs.html">Jobs</a></li>
+                        <li><a href="/pages/contact.html">Contact Us</a></li>
                         ${buttons}
                     </ul>
                 </nav>
