@@ -69,21 +69,7 @@ async function initializeJobListings() {
     }
 }
 
-// function loadSidebar() {
-//     fetch("../components/sidebar.html")
-//         .then(response => response.text())
-//         .then(data => {
-//             document.getElementById("sidebar").innerHTML = data;
-//             // Highlight active sidebar link
-//             const sidebarLinks = document.querySelectorAll(".nav-item");
-//             sidebarLinks.forEach(link => {
-//                 if (link.getAttribute("href").includes("job-listings.html")) {
-//                     link.classList.add("active");
-//                 }
-//             });
-//         })
-//         .catch(error => console.error("Error loading sidebar:", error));
-// }
+
 
 // Functions for rendering jobs and setting up action buttons
 function renderJobs(jobs) {
